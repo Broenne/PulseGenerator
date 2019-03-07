@@ -1,0 +1,11 @@
+/PulseGenerator/PulseGenerator/bin/Debug
+/PulseGenerator/PulseGenerator/obj/Debug
+/PulseGenerator/packages/Autofac.3.5.2
+/PulseGenerator/packages/CommonServiceLocator.1.3
+/PulseGenerator/packages/MahApps.Metro.1.3.0
+/PulseGenerator/packages/MahApps.Metro.IconPacks.1.6.0
+/PulseGenerator/packages/Prism.Autofac.6.2.0
+/PulseGenerator/packages/Prism.Core.6.2.0
+/PulseGenerator/packages/Prism.Wpf.6.2.0
+/PulseGenerator/.vs/PulseGenerator/v15
+/PulseGenerator/*.user

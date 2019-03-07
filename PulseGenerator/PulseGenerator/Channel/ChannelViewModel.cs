@@ -1,46 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PulseGenerator.Channel
+﻿namespace PulseGenerator.Channel
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Runtime.CompilerServices;
     using System.Windows;
 
     using Prism.Mvvm;
 
+    using PulseGenerator.Communication;
     using PulseGenerator.Helper;
 
     /// <summary>
-    /// 
     /// </summary>
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     /// <seealso cref="PulseGenerator.Channel.IChannelViewModel" />
     public class ChannelViewModel : BindableBase, IChannelViewModel
     {
+        private bool isEnabled;
+
+        #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChannelViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ChannelViewModel" /> class.
         /// </summary>
-        public ChannelViewModel(IIsConnectedHandler isConnectedHandler)
+        /// <param name="isConnectedHandler">The is connected handler.</param>
+        /// <param name="send">The send.</param>
+        public ChannelViewModel(IIsConnectedHandler isConnectedHandler, ISend send)
         {
-            isConnectedHandler.EventIsReached += IsConnectedHandler_EventIsReached;
+            isConnectedHandler.EventIsReached += this.IsConnectedHandler_EventIsReached;
 
             var list = new List<ChannelDataForView>();
 
-            for (int i = 0; i < 8; i++)
+            for (uint i = 0; i < 8; i++)
             {
-                list.Add(new ChannelDataForView(i.ToString()));
+                // todo mb: factory
+                list.Add(new ChannelDataForView(i, send));
             }
 
             this.ChannelDataForViewList = new ObservableCollection<ChannelDataForView>(list);
         }
 
+        #endregion
 
-        private bool isEnabled;
+        #region Properties
+
+        /// <summary>
+        ///     Gets the times.
+        /// </summary>
+        /// <value>
+        ///     The times.
+        /// </value>
+        public ObservableCollection<ChannelDataForView> ChannelDataForViewList { get; }
+
         /// <summary>
         ///     Gets or sets the COM ports.
         /// </summary>
@@ -53,7 +64,9 @@ namespace PulseGenerator.Channel
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        #endregion
 
+        #region Private Methods
 
         private void IsConnectedHandler_EventIsReached(object sender, bool e)
         {
@@ -67,13 +80,6 @@ namespace PulseGenerator.Channel
             }
         }
 
-        /// <summary>
-        ///     Gets the times.
-        /// </summary>
-        /// <value>
-        ///     The times.
-        /// </value>
-        public ObservableCollection<ChannelDataForView> ChannelDataForViewList { get; }
-
+        #endregion
     }
 }

@@ -4,6 +4,7 @@
 
     using Autofac;
 
+    using PulseGenerator.Communication;
     using PulseGenerator.Helper;
 
     using Module = Autofac.Module;
@@ -27,6 +28,7 @@
             builder.RegisterAssemblyTypes(dataAccess).AsImplementedInterfaces();
 
             builder.RegisterType<IsConnectedHandler>().As<IIsConnectedHandler>().SingleInstance();
+            builder.RegisterType<Send>().As<ISend>().SingleInstance();
         }
 
         #endregion

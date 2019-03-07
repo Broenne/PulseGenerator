@@ -35,6 +35,7 @@
                                                                         Margin="3" Value="{Binding StopTime}" />
                                             </StackPanel>
                                             <Button Command="{Binding SetActionCommand}">Set</Button>
+                                            <Ellipse Grid.Column="1" Fill="{Binding Color}" Margin="2" Height="25" Width="25"></Ellipse>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>

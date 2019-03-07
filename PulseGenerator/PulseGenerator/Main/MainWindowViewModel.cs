@@ -7,11 +7,11 @@
     using System.Windows;
     using System.Windows.Input;
 
-    using Helper;
-
     using Prism.Mvvm;
 
     using PulseGenerator.Channel;
+    using PulseGenerator.Communication;
+    using PulseGenerator.Helper;
     using PulseGenerator.Main;
 
     /// <summary>
@@ -26,9 +26,11 @@
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
+        /// Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
         /// </summary>
-        public MainWindowViewModel(IChannelView channelView, IIsConnectedHandler isConnectedHandler)
+        /// <param name="channelView">The channel view.</param>
+        /// <param name="isConnectedHandler">The is connected handler.</param>
+        public MainWindowViewModel(IChannelView channelView, IIsConnectedHandler isConnectedHandler, ISend send)
         {
             this.WindowLoadCommand = new RelayCommand(this.WindowLoadCommandAction);
             this.RefreshCommand = new RelayCommand(this.RefreshCommandAction);
@@ -36,21 +38,19 @@
             this.DisconnectCommand = new RelayCommand(this.DisconnectCommandAction);
 
             this.ChannelView = channelView;
-            this.IsConnectedHandler = isConnectedHandler;
+            //this.IsConnectedHandler = isConnectedHandler;
+            this.Send = send;
         }
 
         #endregion
 
         #region Properties
-
-
-        public IIsConnectedHandler IsConnectedHandler { get; }
-
+        
         /// <summary>
-        ///     Gets or sets the COM ports.
+        /// Gets the channel view.
         /// </summary>
         /// <value>
-        ///     The COM ports.
+        /// The channel view.
         /// </value>
         public IChannelView ChannelView { get; }
 
@@ -73,6 +73,8 @@
         ///     The disconnect command.
         /// </value>
         public ICommand DisconnectCommand { get; }
+
+       
 
         /// <summary>
         ///     Gets the open value command.
@@ -98,7 +100,8 @@
         /// </value>
         public ICommand WindowLoadCommand { get; set; }
 
-        private SerialPort SerialPort { get; set; }
+
+        private ISend Send { get; }
 
         #endregion
 
@@ -108,7 +111,9 @@
         {
             try
             {
-                var comPort = (string)obj;
+
+
+                string comPort = (string)obj;
 
                 if (string.IsNullOrEmpty(comPort))
                 {
@@ -116,14 +121,7 @@
                     return;
                 }
 
-                this.SerialPort = new SerialPort();
-                this.SerialPort.BaudRate = 115200;
-                this.SerialPort.PortName = comPort;
-                this.SerialPort.Close();
-                this.SerialPort.Open();
-                this.SerialPort.ReadTimeout = 200;
-
-                this.IsConnectedHandler.OnReached(this.SerialPort.IsOpen);
+                this.Send.Open(comPort);
             }
             catch (Exception ex)
             {
@@ -153,9 +151,9 @@
         {
             try
             {
-                this.SerialPort.Close();
+                this.Send.Close();
                 
-                this.IsConnectedHandler.OnReached(false);
+                //this.IsConnectedHandler.OnReached(false);
             }
             catch (Exception ex)
             {

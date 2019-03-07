@@ -86,11 +86,13 @@
     <Compile Include="Channel\ChannelViewModel.cs" />
     <Compile Include="Channel\IChannelView.cs" />
     <Compile Include="Channel\IChannelViewModel.cs" />
+    <Compile Include="Communication\ISend.cs" />
+    <Compile Include="Communication\Send.cs" />
     <Compile Include="Helper\IIsConnectedHandler.cs" />
     <Compile Include="Helper\IsConnectedHandler.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Main\IMainWindow.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Main\MainWindowViewModel.cs" />
     <Compile Include="Main\IMainWindowViewModel.cs" />
     <Compile Include="PulseGeneratorBootstrapper.cs" />
     <Compile Include="PulseGeneratorContainerModule.cs" />
