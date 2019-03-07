@@ -11,6 +11,7 @@
     using PulseGenerator.Helper;
 
     /// <summary>
+    /// The channel view model.
     /// </summary>
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     /// <seealso cref="PulseGenerator.Channel.IChannelViewModel" />
@@ -24,8 +25,8 @@
         /// Initializes a new instance of the <see cref="ChannelViewModel" /> class.
         /// </summary>
         /// <param name="isConnectedHandler">The is connected handler.</param>
-        /// <param name="send">The send.</param>
-        public ChannelViewModel(IIsConnectedHandler isConnectedHandler, ISend send)
+        /// <param name="send">The send info.</param>
+        public ChannelViewModel(IIsConnectedHandler isConnectedHandler, ISend send, IReadEventHandler readEventHandler)
         {
             isConnectedHandler.EventIsReached += this.IsConnectedHandler_EventIsReached;
 
@@ -34,7 +35,7 @@
             for (uint i = 0; i < 8; i++)
             {
                 // todo mb: factory
-                list.Add(new ChannelDataForView(i, send));
+                list.Add(new ChannelDataForView(i, send, readEventHandler));
             }
 
             this.ChannelDataForViewList = new ObservableCollection<ChannelDataForView>(list);
@@ -52,11 +53,12 @@
         /// </value>
         public ObservableCollection<ChannelDataForView> ChannelDataForViewList { get; }
 
+
         /// <summary>
-        ///     Gets or sets the COM ports.
+        /// Gets or sets a value indicating whether this instance is enabled.
         /// </summary>
         /// <value>
-        ///     The COM ports.
+        ///   <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
         /// </value>
         public bool IsEnabled
         {

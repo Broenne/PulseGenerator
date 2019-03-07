@@ -93,7 +93,7 @@ namespace PulseGenerator
 
         public void Dispose()
         {
-            Console.WriteLine("Dispose !!!s");
+            Console.WriteLine("Dispose !!!");
         }
     }
 }

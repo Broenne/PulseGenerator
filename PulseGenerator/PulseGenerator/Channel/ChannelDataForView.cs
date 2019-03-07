@@ -1,6 +1,7 @@
 ﻿namespace PulseGenerator.Channel
 {
     using System;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -16,6 +17,12 @@
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     public class ChannelDataForView : BindableBase
     {
+        #region Constants
+
+        private const int Period = 500;
+
+        #endregion
+
         private readonly SolidColorBrush green = new SolidColorBrush(Colors.Green);
 
         private readonly SolidColorBrush red = new SolidColorBrush(Colors.Red);
@@ -33,7 +40,8 @@
         /// </summary>
         /// <param name="name">The name info.</param>
         /// <param name="send">The send.</param>
-        public ChannelDataForView(uint name, ISend send)
+        /// <param name="readEventHandler">The read event handler.</param>
+        public ChannelDataForView(uint name, ISend send, IReadEventHandler readEventHandler)
         {
             this.Name = name;
             this.Send = send;
@@ -42,6 +50,9 @@
             this.Stops = 20;
 
             this.Color = this.red;
+            readEventHandler.EventIsReached += this.ReadEventHandler_EventIsReached;
+
+            this.Timer = new Timer(this.TimerCallback, null, 0, Period);
         }
 
         #endregion
@@ -103,11 +114,13 @@
             set => this.SetProperty(ref this.stopTime, value);
         }
 
+        private ISend Send { get; }
+
+        private Timer Timer { get; }
+
         #endregion
 
         #region Public Methods
-
-        private ISend Send { get; }
 
         /// <summary>
         ///     Sets the action command action.
@@ -118,6 +131,38 @@
             try
             {
                 this.Send.Do(this.Name, this.Stops, this.StopTime);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void TimerCallback(object obj)
+        {
+            try
+            {
+                this.Color = this.red;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        private void ReadEventHandler_EventIsReached(object sender, ReadArgumentsArgs e)
+        {
+            try
+            {
+                if (e.Channel.Equals(this.Name))
+                {
+                    this.Timer.Change(0, Period);
+                    this.Color = this.green;
+                }
             }
             catch (Exception ex)
             {

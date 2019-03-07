@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PulseGenerator.Helper
+﻿namespace PulseGenerator.Helper
 {
+    using System;
     using System.Windows;
 
+    /// <summary>
+    /// The is connected evnet handler.
+    /// </summary>
+    /// <seealso cref="PulseGenerator.Helper.IIsConnectedHandler" />
     public class IsConnectedHandler : IIsConnectedHandler
     {
-
-        #region Constructor
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CanIsConnectedEventHandler" /> class.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        public IsConnectedHandler()
-        {
-        }
-
-        #endregion
-
         #region Events
 
         /// <summary>
@@ -32,14 +18,12 @@ namespace PulseGenerator.Helper
 
         #endregion
 
-        #region Properties
-
-
-        #endregion
-
         #region Public Methods
 
-       
+        /// <summary>
+        /// Called when [reached].
+        /// </summary>
+        /// <param name="e">if set to <c>true</c> [e].</param>
         public virtual void OnReached(bool e)
         {
             try
@@ -56,10 +40,8 @@ namespace PulseGenerator.Helper
                 MessageBox.Show(exception.Message);
                 throw;
             }
-           
         }
 
         #endregion
-
     }
 }

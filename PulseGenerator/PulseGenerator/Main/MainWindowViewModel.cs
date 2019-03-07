@@ -111,8 +111,6 @@
         {
             try
             {
-
-
                 string comPort = (string)obj;
 
                 if (string.IsNullOrEmpty(comPort))
@@ -152,8 +150,6 @@
             try
             {
                 this.Send.Close();
-                
-                //this.IsConnectedHandler.OnReached(false);
             }
             catch (Exception ex)
             {

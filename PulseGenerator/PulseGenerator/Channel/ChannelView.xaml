@@ -23,11 +23,11 @@
                                 <Border BorderBrush="Black" BorderThickness="1">
                                     <StackPanel Orientation="Vertical" Margin="3">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBox FontSize="18" FontWeight="Bold"  Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" VerticalAlignment="Center" />
+                                            <TextBox FontSize="18" FontWeight="Bold"  Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" VerticalAlignment="Center" ToolTip="Zeigt die Kanal-Nummer." />
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Label>Unterbrechung/min</Label>
                                                 <controls:NumericUpDown Minimum="0" Maximum="60" Interval="1"
-                                                                        Margin="3" Value="{Binding Stops}" />
+                                                                        Margin="3" Value="{Binding Stops}" ToolTip="Stellt die Unterbrechungszeit ein." />
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Label>Unterbrechung in ms</Label>
@@ -35,7 +35,7 @@
                                                                         Margin="3" Value="{Binding StopTime}" />
                                             </StackPanel>
                                             <Button Command="{Binding SetActionCommand}">Set</Button>
-                                            <Ellipse Grid.Column="1" Fill="{Binding Color}" Margin="2" Height="25" Width="25"></Ellipse>
+                                            <Ellipse Grid.Column="1" Fill="{Binding Color}" Margin="2" Height="25" Width="25" ToolTip="Zeigt die korrekte Konfiguration des Kanals an."></Ellipse>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>

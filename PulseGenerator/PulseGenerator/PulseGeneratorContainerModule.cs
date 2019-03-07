@@ -29,6 +29,7 @@
 
             builder.RegisterType<IsConnectedHandler>().As<IIsConnectedHandler>().SingleInstance();
             builder.RegisterType<Send>().As<ISend>().SingleInstance();
+            builder.RegisterType<ReadEventHandler>().As<IReadEventHandler>().SingleInstance();
         }
 
         #endregion

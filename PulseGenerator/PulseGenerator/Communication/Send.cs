@@ -5,18 +5,27 @@
 
     using PulseGenerator.Helper;
 
+    /// <summary>
+    ///     The send service.
+    /// </summary>
+    /// <seealso cref="PulseGenerator.Communication.ISend" />
     public class Send : ISend
     {
-        #region Properties
-        
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Send"/> class.
+        ///     Initializes a new instance of the <see cref="Send" /> class.
         /// </summary>
         /// <param name="isConnectedHandler">The is connected handler.</param>
-        public Send(IIsConnectedHandler isConnectedHandler)
+        public Send(IIsConnectedHandler isConnectedHandler, IRead read)
         {
             this.IsConnectedHandler = isConnectedHandler;
+            this.Read = read;
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         ///     Gets the is connected handler.
@@ -26,6 +35,8 @@
         /// </value>
         public IIsConnectedHandler IsConnectedHandler { get; }
 
+        private IRead Read { get; }
+
         private SerialPort SerialPort { get; set; }
 
         #endregion
@@ -33,12 +44,13 @@
         #region Public Methods
 
         /// <summary>
-        /// Closes this instance.
+        ///     Closes this instance.
         /// </summary>
         public void Close()
         {
             try
             {
+                this.Read.Stop();
                 this.SerialPort.Close();
             }
             catch (Exception ex)
@@ -48,7 +60,7 @@
         }
 
         /// <summary>
-        /// Does the specified channel.
+        ///     Does the specified channel.
         /// </summary>
         /// <param name="channel">The channel.</param>
         /// <param name="stops">The stops.</param>
@@ -67,7 +79,7 @@
         }
 
         /// <summary>
-        /// Opens the specified COM port.
+        ///     Opens the specified COM port.
         /// </summary>
         /// <param name="comPort">The COM port.</param>
         public void Open(string comPort)
@@ -82,6 +94,8 @@
                 this.SerialPort.ReadTimeout = 200;
 
                 this.IsConnectedHandler.OnReached(this.SerialPort.IsOpen);
+
+                this.Read.PermanentAsync(this.SerialPort);
             }
             catch (Exception ex)
             {

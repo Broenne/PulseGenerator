@@ -8,7 +8,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="PulseGenerator 1.0.0" Height="650" Width="800">
+        Title="PulseGenerator 1.0.0" Height="580" Width="620">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -29,12 +29,12 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <ComboBox Margin="5" MinWidth="140" Height="40" Name="ComboBox" ItemsSource="{Binding ComPorts}" ></ComboBox>
-            <Button Command="{Binding RefreshCommand}" Width="60">
+            <Button Command="{Binding RefreshCommand}" Width="60" ToolTip="Zum aktualliseren der verfügbaren COM-Ports.">
                 <iconPacks:PackIconMaterial  Kind="Refresh"  VerticalAlignment="Center" HorizontalAlignment="Center"  />
             </Button>
             <Button Command="{Binding OpenValueCommand}" CommandParameter="{Binding ElementName=ComboBox,Path=SelectedItem}">Connect</Button>
