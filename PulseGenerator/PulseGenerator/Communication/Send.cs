@@ -50,8 +50,9 @@
         {
             try
             {
-                this.Read.Stop();
-                this.SerialPort.Close();
+                this.IsConnectedHandler?.OnReached(false);
+                this.Read?.Stop();
+                //this.SerialPort?.Close();
             }
             catch (Exception ex)
             {

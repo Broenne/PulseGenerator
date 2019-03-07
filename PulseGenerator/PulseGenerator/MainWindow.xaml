@@ -33,11 +33,11 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <ComboBox Margin="5" MinWidth="140" Height="40" Name="ComboBox" ItemsSource="{Binding ComPorts}" ></ComboBox>
-            <Button Command="{Binding RefreshCommand}" Width="60" ToolTip="Zum aktualliseren der verfügbaren COM-Ports.">
+            <ComboBox Margin="5" MinWidth="140" Height="40" Name="ComboBox" SelectedItem="{Binding Selected}" ItemsSource="{Binding ComPorts}" IsEnabled="{Binding IsEnabled}"></ComboBox>
+            <Button Command="{Binding RefreshCommand}" IsEnabled="{Binding IsEnabled}" Width="60" ToolTip="Zum aktualliseren der verfügbaren COM-Ports.">
                 <iconPacks:PackIconMaterial  Kind="Refresh"  VerticalAlignment="Center" HorizontalAlignment="Center"  />
             </Button>
-            <Button Command="{Binding OpenValueCommand}" CommandParameter="{Binding ElementName=ComboBox,Path=SelectedItem}">Connect</Button>
+            <Button Command="{Binding OpenValueCommand}" IsEnabled="{Binding IsEnabled}" CommandParameter="{Binding ElementName=ComboBox,Path=SelectedItem}">Connect</Button>
             <Button Command="{Binding DisconnectCommand}">Disconnect</Button>
         </StackPanel>
         <ContentPresenter Grid.Row="1" Content="{Binding ChannelView}"></ContentPresenter>

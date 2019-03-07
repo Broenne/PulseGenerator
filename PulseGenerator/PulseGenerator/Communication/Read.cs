@@ -28,8 +28,20 @@
 
         #region Public Methods
 
+        public void Dispose()
+        {
+            try
+            {
+                this.Stop();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
-        /// Permanents the asynchronous.
+        ///     Permanents the asynchronous.
         /// </summary>
         /// <param name="serialPort">The serial port.</param>
         /// <returns>Return the task.</returns>
@@ -44,7 +56,7 @@
                 await Task.Run(
                     () =>
                         {
-                            while (true)
+                            while (!this.cancelToken.IsCancellationRequested)
                             {
                                 if (this.SerialPort != null && this.SerialPort.IsOpen)
                                 {
@@ -63,6 +75,8 @@
                             }
                         },
                     this.cancelToken.Token);
+
+                this.SerialPort?.Close();
             }
             catch (Exception ex)
             {
@@ -77,9 +91,7 @@
         {
             try
             {
-                this.SerialPort?.Close();
                 this.cancelToken.Cancel();
-                this.SerialPort = null;
             }
             catch (Exception ex)
             {

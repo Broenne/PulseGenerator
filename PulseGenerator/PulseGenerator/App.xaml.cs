@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-
-namespace PulseGenerator
+﻿namespace PulseGenerator
 {
+    using System;
     using System.Globalization;
     using System.Threading;
+    using System.Windows;
 
     /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+    ///     Interaction logic for App.xaml
+    /// </summary>s
     public partial class App : Application
     {
+        #region Properties
 
         /// <summary>
-        /// Gets the OSCI BOOTSTRAPPER.
+        ///     Gets the OSCI BOOTSTRAPPER.
         /// </summary>
         /// <value>
-        /// The OSCI BOOTSTRAPPER.
+        ///     The OSCI BOOTSTRAPPER.
         /// </value>
         public PulseGeneratorBootstrapper PulseGeneratorBootstrapper { get; private set; }
+
+        #endregion
 
         #region Protected Methods
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Application.Startup" /> event.
+        ///     Raises the <see cref="E:System.Windows.Application.Startup" /> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.StartupEventArgs" /> that contains the event data.</param>
         protected override void OnStartup(StartupEventArgs e)
@@ -39,20 +36,33 @@ namespace PulseGenerator
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
                 this.PulseGeneratorBootstrapper = new PulseGeneratorBootstrapper();
                 this.PulseGeneratorBootstrapper.Run();
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                //throw;
+
+                // throw;
             }
         }
 
         #endregion
 
+        #region Private Methods
+
         private void ApplicationExit(object sender, ExitEventArgs e)
         {
-            this.PulseGeneratorBootstrapper.Dispose(); // todo mb: store values
+            try
+            {
+                this.PulseGeneratorBootstrapper.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+
+                // throw;
+            }
         }
+
+        #endregion
     }
 }
