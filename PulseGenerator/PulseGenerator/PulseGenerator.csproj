@@ -105,7 +105,12 @@
     <Compile Include="Helper\IIsConnectedHandler.cs" />
     <Compile Include="Helper\IsConnectedHandler.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
+    <Compile Include="InitData\ChannelInfo.cs" />
+    <Compile Include="InitData\FileHelper.cs" />
+    <Compile Include="InitData\IFileHelper.cs" />
+    <Compile Include="InitData\ILoad.cs" />
     <Compile Include="InitData\ISave.cs" />
+    <Compile Include="InitData\Load.cs" />
     <Compile Include="InitData\Save.cs" />
     <Compile Include="Main\IMainWindow.cs" />
     <Compile Include="Main\MainWindowViewModel.cs" />

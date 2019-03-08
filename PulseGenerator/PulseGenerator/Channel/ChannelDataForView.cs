@@ -41,15 +41,17 @@
         /// Initializes a new instance of the <see cref="ChannelDataForView" /> class.
         /// </summary>
         /// <param name="name">The name info.</param>
+        /// <param name="stops">The stops.</param>
+        /// <param name="stopTime">The stop time.</param>
         /// <param name="send">The send service.</param>
         /// <param name="readEventHandler">The read event handler.</param>
-        public ChannelDataForView(uint name, ISend send, IReadEventHandler readEventHandler)
+        public ChannelDataForView(uint name, uint stops, uint stopTime, ISend send, IReadEventHandler readEventHandler)
         {
             this.Name = name;
             this.Send = send;
             this.SetActionCommand = new RelayCommand(this.SetActionCommandAction);
-            this.StopTime = 10;
-            this.Stops = 20;
+            this.StopTime = stopTime;
+            this.Stops = stops;
 
             this.Color = this.red;
             readEventHandler.EventIsReached += this.ReadEventHandler_EventIsReached;

@@ -3,12 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows;
 
     using Prism.Mvvm;
 
     using PulseGenerator.Communication;
     using PulseGenerator.Helper;
+    using PulseGenerator.InitData;
 
     /// <summary>
     ///     The channel view model.
@@ -22,23 +24,19 @@
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ChannelViewModel" /> class.
+        /// Initializes a new instance of the <see cref="ChannelViewModel" /> class.
         /// </summary>
         /// <param name="isConnectedHandler">The is connected handler.</param>
+        /// <param name="load">The load.</param>
         /// <param name="send">The send info.</param>
         /// <param name="readEventHandler">The read event handler.</param>
-        public ChannelViewModel(IIsConnectedHandler isConnectedHandler, ISend send, IReadEventHandler readEventHandler)
+        public ChannelViewModel(IIsConnectedHandler isConnectedHandler, ILoad load, ISend send, IReadEventHandler readEventHandler)
         {
             isConnectedHandler.EventIsReached += this.IsConnectedHandler_EventIsReached;
 
-            var list = new List<ChannelDataForView>();
+            this.Load = load;
 
-            for (uint i = 0; i < 8; i++)
-            {
-                // todo mb: factory
-                list.Add(new ChannelDataForView(i, send, readEventHandler));
-            }
-
+            var list = this.PrepareUi(send, readEventHandler);
             this.ChannelDataForViewList = new ObservableCollection<ChannelDataForView>(list);
         }
 
@@ -66,12 +64,14 @@
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        private ILoad Load { get; }
+
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// Gets the infos.
+        ///     Gets the infos.
         /// </summary>
         /// <returns></returns>
         public IReadOnlyList<string> GetInfos()
@@ -96,6 +96,34 @@
         #endregion
 
         #region Private Methods
+
+        private IList<ChannelDataForView> PrepareUi(ISend send, IReadEventHandler readEventHandler)
+        {
+            // todo mb: das ist eigentlich ein eigenr service
+            var inits = this.Load.Do();
+
+            var list = new List<ChannelDataForView>();
+
+            for (uint i = 0; i < 8; i++)
+            {
+                var channel = i;
+                uint stops = 10;
+                uint stopTime = 20;
+
+                var theChannelInfo = inits.FirstOrDefault(x => x.Channel.Equals(i));
+                if (theChannelInfo != null)
+                {
+                    channel = theChannelInfo.Channel;
+                    stops = theChannelInfo.Stops;
+                    stopTime = theChannelInfo.StopTime;
+                }
+
+                // todo mb: factory
+                list.Add(new ChannelDataForView(channel, stops, stopTime, send, readEventHandler));
+            }
+
+            return list;
+        }
 
         private void IsConnectedHandler_EventIsReached(object sender, bool e)
         {

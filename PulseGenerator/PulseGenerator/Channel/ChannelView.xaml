@@ -35,9 +35,7 @@
                                                                         Margin="3" Value="{Binding StopTime}" />
                                             </StackPanel>
                                             <Button Command="{Binding SetActionCommand}">Set</Button>
-                                            <Border Grid.Column="1" BorderThickness="0.5" BorderBrush="Black">
-                                                <Ellipse  Fill="{Binding Color}" Margin="2" Height="25" Width="25" ToolTip="Zeigt die korrekte Konfiguration des Kanals an."></Ellipse>
-                                            </Border>
+                                            <Ellipse Fill="{Binding Color}" Margin="2" Height="25" Width="25" ToolTip="Zeigt an ob die Daten der Oberfläche und der IO äquivalent sind."></Ellipse>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
