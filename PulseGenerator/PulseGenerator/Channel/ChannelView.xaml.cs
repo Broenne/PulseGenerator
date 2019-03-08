@@ -7,12 +7,24 @@
     {
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChannelView"/> class.
+        /// </summary>
+        /// <param name="vm">The vm.</param>
         public ChannelView(IChannelViewModel vm)
         {
             this.InitializeComponent();
-            this.DataContext = vm;
+            this.ViewModel = vm;
+            this.DataContext = this.ViewModel;
         }
 
+
+        private IChannelViewModel ViewModel { get; }
         #endregion
+
+        public IChannelViewModel GetDataContext()
+        {
+            return this.ViewModel;
+        }
     }
 }

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PulseGenerator.Communication
+﻿namespace PulseGenerator.Communication
 {
+    using System;
 
+    /// <summary>
+    ///     The read event handler.
+    /// </summary>
+    /// <seealso cref="PulseGenerator.Communication.IReadEventHandler" />
     public class ReadEventHandler : IReadEventHandler
     {
-
         #region Events
 
         /// <summary>
@@ -19,14 +17,12 @@ namespace PulseGenerator.Communication
 
         #endregion
 
-        #region Properties
-
-
-        #endregion
-
         #region Public Methods
 
-
+        /// <summary>
+        /// Called when [reached].
+        /// </summary>
+        /// <param name="e">The event argument.</param>
         public virtual void OnReached(ReadArgumentsArgs e)
         {
             try
@@ -35,17 +31,15 @@ namespace PulseGenerator.Communication
                 {
                     return;
                 }
-                
+
                 this.EventIsReached.Invoke(this, e);
             }
             catch (Exception exception)
             {
                 throw;
             }
-
         }
 
         #endregion
-
     }
 }

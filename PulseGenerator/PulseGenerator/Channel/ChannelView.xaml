@@ -35,7 +35,9 @@
                                                                         Margin="3" Value="{Binding StopTime}" />
                                             </StackPanel>
                                             <Button Command="{Binding SetActionCommand}">Set</Button>
-                                            <Ellipse Grid.Column="1" Fill="{Binding Color}" Margin="2" Height="25" Width="25" ToolTip="Zeigt die korrekte Konfiguration des Kanals an."></Ellipse>
+                                            <Border Grid.Column="1" BorderThickness="0.5" BorderBrush="Black">
+                                                <Ellipse  Fill="{Binding Color}" Margin="2" Height="25" Width="25" ToolTip="Zeigt die korrekte Konfiguration des Kanals an."></Ellipse>
+                                            </Border>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>

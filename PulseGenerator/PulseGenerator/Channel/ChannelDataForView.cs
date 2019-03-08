@@ -25,6 +25,8 @@
 
         private readonly SolidColorBrush green = new SolidColorBrush(Colors.Green);
 
+        private readonly SolidColorBrush lightGreen = new SolidColorBrush(Colors.LightGreen);
+
         private readonly SolidColorBrush red = new SolidColorBrush(Colors.Red);
 
         private SolidColorBrush color;
@@ -39,7 +41,7 @@
         /// Initializes a new instance of the <see cref="ChannelDataForView" /> class.
         /// </summary>
         /// <param name="name">The name info.</param>
-        /// <param name="send">The send.</param>
+        /// <param name="send">The send service.</param>
         /// <param name="readEventHandler">The read event handler.</param>
         public ChannelDataForView(uint name, ISend send, IReadEventHandler readEventHandler)
         {
@@ -138,6 +140,17 @@
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{this.Name};{this.Stops};{this.StopTime}";
+        }
+
         #endregion
 
         #region Private Methods
@@ -148,7 +161,7 @@
             {
                 this.Color = this.red;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -160,8 +173,15 @@
             {
                 if (e.Channel.Equals(this.Name))
                 {
-                    this.Timer.Change(0, Period);
-                    this.Color = this.green;
+                    if (e.Stops.Equals(this.Stops) && e.BreakTime.Equals(this.StopTime))
+                    {
+                        this.Timer.Change(0, Period);
+                        this.Color = this.Color == this.green ? this.lightGreen : this.green;
+                    }
+                    else
+                    {
+                        this.Color = this.red;
+                    }
                 }
             }
             catch (Exception ex)

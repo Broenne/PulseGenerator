@@ -5,12 +5,20 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// The service for read serial.
+    /// </summary>
+    /// <seealso cref="PulseGenerator.Communication.IRead" />
     public class Read : IRead
     {
         private CancellationTokenSource cancelToken;
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Read"/> class.
+        /// </summary>
+        /// <param name="readEventHandler">The read event handler.</param>
         public Read(IReadEventHandler readEventHandler)
         {
             this.ReadEventHandler = readEventHandler;
@@ -28,6 +36,9 @@
 
         #region Public Methods
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             try
@@ -63,9 +74,12 @@
                                     try
                                     {
                                         var line = this.SerialPort.ReadLine();
+                                        var readArguments = this.BuildArguments(line);
 
-                                        // todo mb: mappen
-                                        this.ReadEventHandler.OnReached(new ReadArgumentsArgs(2));
+                                        if (readArguments != null)
+                                        {
+                                            this.ReadEventHandler.OnReached(readArguments);
+                                        }
                                     }
                                     catch (TimeoutException)
                                     {
@@ -91,12 +105,40 @@
         {
             try
             {
-                this.cancelToken.Cancel();
+                this.cancelToken?.Cancel();
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private ReadArgumentsArgs BuildArguments(string line)
+        {
+            var splittedLine = line.Split(';');
+            ReadArgumentsArgs readArguments = null;
+            if (splittedLine.Length.Equals(3))
+            {
+                var channelAsString = splittedLine[0];
+                var stopsAsString = splittedLine[1];
+                var breakTimeAsString = splittedLine[2];
+
+                var channel = Convert.ToUInt32(channelAsString);
+                var stops = Convert.ToUInt32(stopsAsString);
+                var breakTime = Convert.ToUInt32(breakTimeAsString);
+
+                readArguments = new ReadArgumentsArgs(channel, stops, breakTime);
+            }
+            else
+            {
+                Console.WriteLine("Ignore while wrong string");
+            }
+
+            return readArguments;
         }
 
         #endregion

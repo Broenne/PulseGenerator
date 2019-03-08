@@ -14,9 +14,10 @@
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Send" /> class.
+        /// Initializes a new instance of the <see cref="Send" /> class.
         /// </summary>
         /// <param name="isConnectedHandler">The is connected handler.</param>
+        /// <param name="read">The read service.</param>
         public Send(IIsConnectedHandler isConnectedHandler, IRead read)
         {
             this.IsConnectedHandler = isConnectedHandler;
@@ -52,7 +53,6 @@
             {
                 this.IsConnectedHandler?.OnReached(false);
                 this.Read?.Stop();
-                //this.SerialPort?.Close();
             }
             catch (Exception ex)
             {

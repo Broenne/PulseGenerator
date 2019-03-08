@@ -1,4 +1,4 @@
-﻿namespace PulseGenerator
+﻿namespace PulseGenerator.Main
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@
     using PulseGenerator.Channel;
     using PulseGenerator.Communication;
     using PulseGenerator.Helper;
-    using PulseGenerator.Main;
+    using PulseGenerator.InitData;
 
     /// <summary>
     ///     The main window view model.
@@ -25,6 +25,8 @@
 
         private bool isEnabled;
 
+        private string selected;
+
         #region Constructor
 
         /// <summary>
@@ -32,7 +34,9 @@
         /// </summary>
         /// <param name="channelView">The channel view.</param>
         /// <param name="isConnectedHandler">The is connected handler.</param>
-        public MainWindowViewModel(IChannelView channelView, IIsConnectedHandler isConnectedHandler, ISend send)
+        /// <param name="send">The send service.</param>
+        /// <param name="save">The save service.</param>
+        public MainWindowViewModel(IChannelView channelView, IIsConnectedHandler isConnectedHandler, ISend send, ISave save)
         {
             this.WindowLoadCommand = new RelayCommand(this.WindowLoadCommandAction);
             this.RefreshCommand = new RelayCommand(this.RefreshCommandAction);
@@ -43,8 +47,9 @@
 
             this.ChannelView = channelView;
             isConnectedHandler.EventIsReached += this.IsConnectedHandler_EventIsReached;
-            
+
             this.Send = send;
+            this.Save = save;
         }
 
         #endregion
@@ -80,10 +85,10 @@
         public ICommand DisconnectCommand { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is enabled.
+        ///     Gets or sets a value indicating whether this instance is enabled.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
         /// </value>
         public bool IsEnabled
         {
@@ -108,6 +113,18 @@
         public ICommand RefreshCommand { get; }
 
         /// <summary>
+        ///     Gets or sets the selected.
+        /// </summary>
+        /// <value>
+        ///     The selected.
+        /// </value>
+        public string Selected
+        {
+            get => this.selected;
+            set => this.SetProperty(ref this.selected, value);
+        }
+
+        /// <summary>
         ///     Gets or sets the window load command.
         /// </summary>
         /// <value>
@@ -115,7 +132,22 @@
         /// </value>
         public ICommand WindowLoadCommand { get; set; }
 
+        private ISave Save { get; }
+
         private ISend Send { get; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        ///     Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        public void Dispose()
+        {
+            // kein try catch, dann ist eh zu spät
+            this.DisconnectCommandAction(null);
+        }
 
         #endregion
 
@@ -160,15 +192,6 @@
             this.Selected = this.ComPorts.FirstOrDefault();
         }
 
-        private string selected;
-
-        public string Selected
-        {
-            get => this.selected;
-            set => this.SetProperty(ref this.selected, value);
-        }
-
-
         private void RefreshCommandAction(object obj)
         {
             try
@@ -186,6 +209,9 @@
             try
             {
                 this.Send.Close();
+
+                var initList = this.ChannelView?.GetDataContext()?.GetInfos();
+                this.Save.Do(initList);
             }
             catch (Exception ex)
             {

@@ -1,9 +1,12 @@
 ﻿namespace PulseGenerator.Main
 {
+    using System;
+
     /// <summary>
     /// The main window view model.
     /// </summary>
-    public interface IMainWindowViewModel
+    /// <seealso cref="System.IDisposable" />
+    public interface IMainWindowViewModel : IDisposable
     {
     }
 }

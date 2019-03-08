@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PulseGenerator
+﻿namespace PulseGenerator
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using System.Windows.Threading;
@@ -16,8 +11,34 @@ namespace PulseGenerator
 
     using PulseGenerator.Main;
 
-    public class PulseGeneratorBootstrapper : AutofacBootstrapper , IDisposable
+    /// <summary>
+    ///     The pulse generator boot STRAPPER.
+    /// </summary>
+    /// <seealso cref="Prism.Autofac.AutofacBootstrapper" />
+    /// <seealso cref="System.IDisposable" />
+    public class PulseGeneratorBootstrapper : AutofacBootstrapper, IDisposable
     {
+        #region Public Methods
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            try
+            {
+                Console.WriteLine("Dispose bootstrapper");
+                this.Container?.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        #endregion
+
+        #region Protected Methods
 
         /// <summary>
         ///     Configures the container.
@@ -38,7 +59,6 @@ namespace PulseGenerator
             }
         }
 
-
         /// <summary>
         ///     Creates the shell or main window of the application.
         /// </summary>
@@ -58,7 +78,7 @@ namespace PulseGenerator
         protected override DependencyObject CreateShell()
         {
             var window = this.Container.Resolve<IMainWindow>();
-            
+
             return (MainWindow)window;
         }
 
@@ -91,9 +111,6 @@ namespace PulseGenerator
             }
         }
 
-        public void Dispose()
-        {
-            Console.WriteLine("Dispose !!!");
-        }
+        #endregion
     }
 }

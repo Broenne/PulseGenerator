@@ -11,7 +11,7 @@
     using PulseGenerator.Helper;
 
     /// <summary>
-    /// The channel view model.
+    ///     The channel view model.
     /// </summary>
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     /// <seealso cref="PulseGenerator.Channel.IChannelViewModel" />
@@ -22,10 +22,11 @@
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChannelViewModel" /> class.
+        ///     Initializes a new instance of the <see cref="ChannelViewModel" /> class.
         /// </summary>
         /// <param name="isConnectedHandler">The is connected handler.</param>
         /// <param name="send">The send info.</param>
+        /// <param name="readEventHandler">The read event handler.</param>
         public ChannelViewModel(IIsConnectedHandler isConnectedHandler, ISend send, IReadEventHandler readEventHandler)
         {
             isConnectedHandler.EventIsReached += this.IsConnectedHandler_EventIsReached;
@@ -53,17 +54,43 @@
         /// </value>
         public ObservableCollection<ChannelDataForView> ChannelDataForViewList { get; }
 
-
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is enabled.
+        ///     Gets or sets a value indicating whether this instance is enabled.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
         /// </value>
         public bool IsEnabled
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Gets the infos.
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<string> GetInfos()
+        {
+            try
+            {
+                var xxx = new List<string>();
+
+                foreach (var item in this.ChannelDataForViewList)
+                {
+                    xxx.Add($"{item}");
+                }
+
+                return xxx;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         #endregion
