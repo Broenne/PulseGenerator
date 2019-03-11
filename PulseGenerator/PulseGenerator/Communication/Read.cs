@@ -124,6 +124,9 @@
             if (splittedLine.Length.Equals(3))
             {
                 var channelAsString = splittedLine[0];
+
+                channelAsString = channelAsString.Replace("$SetPu", string.Empty);
+
                 var stopsAsString = splittedLine[1];
                 var breakTimeAsString = splittedLine[2];
 

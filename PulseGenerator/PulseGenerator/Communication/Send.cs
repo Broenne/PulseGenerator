@@ -70,7 +70,8 @@
         {
             try
             {
-                this.SerialPort.WriteLine($"{channel};{stops};{stoptime}");
+                // todo mb: befehl sepraieren
+                this.SerialPort.WriteLine($"$SetPu{channel};{stops};{stoptime}");
                 Console.WriteLine($"Send action channel:{channel} Stops:{stops} stoptime:{stoptime}");
             }
             catch (Exception ex)
@@ -88,11 +89,12 @@
             try
             {
                 this.SerialPort = new SerialPort();
-                this.SerialPort.BaudRate = 115200;
+                this.SerialPort.BaudRate = 57600;
                 this.SerialPort.PortName = comPort;
                 this.SerialPort.Close();
                 this.SerialPort.Open();
                 this.SerialPort.ReadTimeout = 200;
+                this.SerialPort.NewLine = "\r\n";
 
                 this.IsConnectedHandler.OnReached(this.SerialPort.IsOpen);
 

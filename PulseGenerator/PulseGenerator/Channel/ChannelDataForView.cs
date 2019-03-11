@@ -19,7 +19,7 @@
     {
         #region Constants
 
-        private const int Period = 500;
+        private const int Period = 1000;
 
         #endregion
 
@@ -177,8 +177,17 @@
                 {
                     if (e.Stops.Equals(this.Stops) && e.BreakTime.Equals(this.StopTime))
                     {
-                        this.Timer.Change(0, Period);
-                        this.Color = this.Color == this.green ? this.lightGreen : this.green;
+                        this.Timer.Change(Period, Period);
+
+                        if (this.Color == this.green)
+                        {
+                            this.Color = this.lightGreen;
+                        }
+                        else
+                        {
+                            this.Color = this.green;
+                        }
+                       
                     }
                     else
                     {
